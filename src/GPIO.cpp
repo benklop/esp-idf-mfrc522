@@ -10,7 +10,6 @@
 #include "sdkconfig.h"
 #include <esp_log.h>
 #include <esp_err.h>
-#include "GeneralUtils.h"
 
 static const char* LOG_TAG = "GPIO";
 
@@ -30,7 +29,7 @@ void ESP32CPP::GPIO::addISRHandler(gpio_num_t pin, gpio_isr_t handler, void* pAr
 		ESP_LOGD(LOG_TAG, "Installing the global ISR service");
 		esp_err_t errRc = ::gpio_install_isr_service(0);
 		if (errRc != ESP_OK) {
-			ESP_LOGE(LOG_TAG, "<< gpio_install_isr_service: rc=%d %s", errRc, GeneralUtils::errorToString(errRc));
+			ESP_LOGE(LOG_TAG, "<< gpio_install_isr_service: rc=%d", errRc);
 			return;
 		}
 		g_isrServiceInstalled = true;
@@ -38,7 +37,7 @@ void ESP32CPP::GPIO::addISRHandler(gpio_num_t pin, gpio_isr_t handler, void* pAr
 
 	esp_err_t errRc = ::gpio_isr_handler_add(pin, handler, pArgs);
 	if (errRc != ESP_OK) {
-		ESP_LOGE(LOG_TAG, "<< gpio_isr_handler_add: rc=%d %s", errRc, GeneralUtils::errorToString(errRc));
+		ESP_LOGE(LOG_TAG, "<< gpio_isr_handler_add: rc=%d", errRc);
 		return;
 	}
 
@@ -181,7 +180,7 @@ void ESP32CPP::GPIO::write(gpio_num_t pin, bool value) {
 	//ESP_LOGD(LOG_TAG, ">> write: pin: %d, value: %d", pin, value);
 	esp_err_t errRc = ::gpio_set_level(pin, value ? 1 : 0);
 	if (errRc != ESP_OK) {
-		ESP_LOGE(LOG_TAG, "<< gpio_set_level: pin=%d, rc=%d %s", pin, errRc, GeneralUtils::errorToString(errRc));
+		ESP_LOGE(LOG_TAG, "<< gpio_set_level: pin=%d, rc=%d", pin, errRc);
 	}
 } // write
 
